@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 export default function Posts() {
   // state for posts data
   const [posts, setPosts] = useState([]);
+  // state for errrs
+  const [error, setError] = useState(null);
 
   // fetching data
   useEffect(() => {
@@ -15,10 +17,10 @@ export default function Posts() {
           throw new Error("Data fetching failed");
         }
         const data = await response.json();
-        console.log(data);
         setPosts(data);
       } catch (error) {
         console.error("Data fetching failed", error);
+        setError("Data fetching failed");
       }
     };
     fetchData();
@@ -36,5 +38,10 @@ export default function Posts() {
     ));
   };
 
-  return <div>{renderPosts()}</div>;
+  return (
+    <div>
+      {error && <p>{error}</p>}
+      {renderPosts()}
+    </div>
+  );
 }
